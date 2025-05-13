@@ -8,28 +8,31 @@ class UndersampleMajority(BaseEstimator, TransformerMixin):
         self.random_state = random_state
         self.under_params = kwargs
         self.undersampler = None
+        self.sampling_strategy_ = None
 
     def fit(self, X, y):
         # Get original class counts
-        _, counts = np.unique(y, return_counts=True)
-        minority_count = min(counts)
-        target_majority_count = int((1 - self.target_minority_percentage) / self.target_minority_percentage * minority_count)
-        
-        # Compute actual sampling strategy
         class_counts = dict(zip(*np.unique(y, return_counts=True)))
+        minority_class = min(class_counts, key=class_counts.get)
         majority_class = max(class_counts, key=class_counts.get)
-        self.sampling_strategy = {majority_class: target_majority_count}
+        minority_count = class_counts[minority_class]
         
+        # Calculate target majority count
+        target_majority_count = int((minority_count / self.target_minority_percentage) - minority_count)
+        
+        # Set sampling strategy
+        self.sampling_strategy_ = {majority_class: target_majority_count}
+        
+        # Initialize undersampler
         self.undersampler = RandomUnderSampler(
-            sampling_strategy=self.sampling_strategy,
+            sampling_strategy=self.sampling_strategy_,
             random_state=self.random_state,
             **self.under_params
         )
-        self.undersampler.fit_resample(X, y)
         return self
 
-    def transform(self, X, y):
-        return self.undersampler.fit_resample(X, y)
+    def fit_resample(self, X, y):
+        return self.undersampler.fit_resample(X, y)  # Changed from smote to undersampler
 
-if (__name__ == "__main__"):
-    print("undersampling")
+    def transform(self, X, y=None):
+        return X, y

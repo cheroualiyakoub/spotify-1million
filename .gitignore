@@ -194,3 +194,4 @@ kaggle.json
 .streamlit/
 
 data/spotify_data.csv
+/notebooks/data/spotify_data.csv

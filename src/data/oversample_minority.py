@@ -28,8 +28,11 @@ class OversampleMinority(BaseEstimator, TransformerMixin):
         self.smote.fit_resample(X, y)
         return self
 
-    def transform(self, X, y):
-        return self.smote.fit_resample(X, y)\
+    def fit_resample(self, X, y):
+        return self.smote.fit_resample(X, y)
+
+    def transform(self, X, y=None):
+        return X, y
 
 if (__name__ == "__main__"):
     print("oversampling")
