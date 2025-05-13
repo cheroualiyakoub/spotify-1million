@@ -192,3 +192,5 @@ kaggle.json
 
 # Streamlit and FastAPI artifacts
 .streamlit/
+
+data/spotify_data.csv
