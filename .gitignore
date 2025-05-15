@@ -195,3 +195,8 @@ kaggle.json
 
 data/spotify_data.csv
 /notebooks/data/spotify_data.csv
+data/data_2023/data_2023.csv
+data/data_2023/spotify_2023_prerdection'.csv
+data/test/test.csv
+
+*.csv
